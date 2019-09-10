@@ -19,6 +19,7 @@ const Image = styled.div`
 `;
 
 const Title = styled.span`
+  padding: 2px;
   color: #000;
   display: block;
   margin-bottom: 20px;
@@ -37,7 +38,6 @@ const Year = styled.span`
 const Rating = styled.span`
   color: #000;
   text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
-
   transition: opacity 0.2s linear;
   position: absolute;
   bottom: 10px;
@@ -54,6 +54,7 @@ const InfoContainer = styled.div`
   flex-direction: column;
   align-items: center;
   padding-top: 50px;
+  text-align: center;
 `;
 
 const ImageContainer = styled.div`

@@ -3,9 +3,11 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import Helmet from 'react-helmet';
 import { faCalendarAlt, faClock } from '@fortawesome/free-regular-svg-icons';
+import { faStar } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Loader from 'Components/Loader';
 import Message from 'Components/Message';
+import Videos from 'Components/Videos';
 
 const Container = styled.div`
   height: calc(100vh - 50px);
@@ -39,7 +41,7 @@ const Content = styled.div`
 const Cover = styled.div`
   width: 30%;
   height: 100%;
-  background-image: url(${props => props.bgImage});
+  background: url(${props => props.bgImage});
   background-size: cover;
   background-position: center center;
   border-radius: 5px;
@@ -52,25 +54,48 @@ const Data = styled.div`
 
 const Title = styled.h3`
   font-size: 32px;
+  font-weight: 800;
+  text-shadow: 2px 2px 3px rgba(0, 0, 0, 0.6);
 `;
 
 const ItemContainer = styled.div`
   margin: 20px 0;
 `;
 
-const Item = styled.span``;
+const Item = styled.span`
+  text-shadow: 2px 2px 3px rgba(0, 0, 0, 0.6);
+`;
 
 const Divider = styled.span`
   margin: 0 10px;
 `;
 
-const Imdb = styled.a``;
+const Imdb = styled.a`
+  padding: 2px 10px;
+  border: 1px solid #fff;
+  border-radius: 3px;
+  background-color: rgba(255, 255, 255, 0.2);
+  font-size: 14px;
+  text-transform: uppercase;
+  text-shadow: 2px 2px 3px rgba(0, 0, 0, 0.7);
+  &:hover {
+    background-color: rgba(255, 255, 255, 0.5);
+  }
+`;
+
+const SFontAwesomeIcon = styled(FontAwesomeIcon)`
+  filter: drop-shadow(2px 2px 6px #228dff);
+  margin-right: 10px;
+`;
 
 const Overview = styled.p`
-  font-size: 12px;
+  font-size: 14px;
   opacity: 0.7;
+  font-weight: 300;
   line-height: 1.5;
   width: 50%;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.6);
+  margin-bottom: 20px;
 `;
 
 const DetailPresenter = ({ result, error, loading }) => {
@@ -131,22 +156,20 @@ const DetailPresenter = ({ result, error, loading }) => {
                   </Item>
                   <Divider>•</Divider>
                   <Item>
-                    <FontAwesomeIcon icon={faCalendarAlt}></FontAwesomeIcon>
+                    <SFontAwesomeIcon icon={faCalendarAlt} />
                     {year}
                   </Item>
                   <Divider>•</Divider>
                   <Item>
-                    <FontAwesomeIcon icon={faClock} />
-                    {result.runtime ? result.runtime : null}
-                    {/* Math.max(...result.episode_run_time)}{' '} */}
+                    <SFontAwesomeIcon icon={faClock} />
+                    {result.runtime
+                      ? result.runtime
+                      : result.episode_run_time}{' '}
                     min
                   </Item>
                   <Divider>•</Divider>
                   <Item>
-                    <span role="img" aria-label="Rating">
-                      ⭐️
-                    </span>{' '}
-                    ({result.vote_average})
+                    <SFontAwesomeIcon icon={faStar} />({result.vote_average})
                   </Item>
                 </ItemContainer>
                 {result.imdb_id ? (
@@ -160,6 +183,9 @@ const DetailPresenter = ({ result, error, loading }) => {
                   </ItemContainer>
                 ) : null}
                 <Overview>{result.overview && result.overview}</Overview>
+                {result.videos && result.videos.results.length > 0 && (
+                  <Videos videos={result.videos.results} />
+                )}
               </Data>
             </Content>
           </Container>

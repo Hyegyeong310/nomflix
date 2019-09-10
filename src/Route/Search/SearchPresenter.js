@@ -9,6 +9,7 @@ import Poster from 'Components/Poster';
 
 const Container = styled.div`
   padding: 20px;
+  height: calc(100vh - 60px);
 `;
 
 const Form = styled.form`
@@ -40,6 +41,7 @@ const SearchPresenter = ({
         onChange={updateTerm}
         placeholder="Search Movies or TV Shows..."
         value={searchTerm}
+        autoFocus
       ></Input>
     </Form>
     {loading ? (

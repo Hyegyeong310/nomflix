@@ -2,6 +2,9 @@ import React from 'react';
 import Proptypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
+import { faHeart } from '@fortawesome/free-regular-svg-icons';
+import { faStar } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 const Container = styled.div`
   font-size: 12px;
@@ -9,51 +12,78 @@ const Container = styled.div`
 
 const Image = styled.div`
   background-image: url(${props => props.bgUrl});
-  height: 180px;
+  height: 200px;
   background-size: cover;
-  border-radius: 4px;
   background-position: center center;
   transition: opacity 0.2s linear;
 `;
 
-const Rating = styled.span`
-  position: absolute;
-  bottom: 5px;
-  right: 5px;
-  opacity: 0;
-  transition: opacity 0.2s linear;
-`;
-
-const ImageContainer = styled.div`
-  margin-bottom: 5px;
-  position: relative;
-  &:hover {
-    ${Image} {
-      opacity: 0.3;
-    }
-    ${Rating} {
-      opacity: 1;
-    }
-  }
-`;
-
 const Title = styled.span`
+  color: #000;
   display: block;
-  margin-bottom: 3px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+  margin-bottom: 20px;
+  font-size: 14px;
+  font-weight: bold;
+  line-height: 1.5;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
 `;
 
 const Year = styled.span`
-  font-size: 10px;
-  color: rgba(255, 255, 255, 0.5);
+  display: inline-block;
+  color: #000;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+`;
+
+const Rating = styled.span`
+  color: #000;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+
+  transition: opacity 0.2s linear;
+  position: absolute;
+  bottom: 10px;
+`;
+
+const InfoContainer = styled.div`
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  left: 0;
+  top: 0;
+  opacity: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 50px;
+`;
+
+const ImageContainer = styled.div`
+  position: relative;
+  &:hover {
+    background-color: rgba(255, 255, 255, 0.9);
+    ${Image} {
+      opacity: 0.3;
+    }
+    ${InfoContainer} {
+      opacity: 1;
+    }
+  }
 `;
 
 const Poster = ({ id, imageUrl, title, rating, year, isMovie = false }) => (
   <Link to={isMovie ? `/movie/${id}` : `/show/${id}`}>
     <Container>
       <ImageContainer>
+        <InfoContainer>
+          <Title>{title}</Title>
+          <Year>
+            <FontAwesomeIcon icon={faHeart} />
+            {'  '}
+            {year}
+          </Year>
+          <Rating>
+            <FontAwesomeIcon icon={faStar} /> {rating} / 10
+          </Rating>
+        </InfoContainer>
         <Image
           bgUrl={
             imageUrl
@@ -61,15 +91,7 @@ const Poster = ({ id, imageUrl, title, rating, year, isMovie = false }) => (
               : require('../assets/noPosterSmall.png')
           }
         ></Image>
-        <Rating>
-          <span role="img" aria-label="rating">
-            ⭐️
-          </span>{' '}
-          {rating}/10
-        </Rating>
       </ImageContainer>
-      <Title>{title}</Title>
-      <Year>{year}</Year>
     </Container>
   </Link>
 );

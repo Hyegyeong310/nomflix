@@ -3,11 +3,12 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import Helmet from 'react-helmet';
 import { faCalendarAlt, faClock } from '@fortawesome/free-regular-svg-icons';
-import { faStar } from '@fortawesome/free-solid-svg-icons';
+import { faStar, faGlobeAmericas } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Loader from 'Components/Loader';
 import Message from 'Components/Message';
 import Videos from 'Components/Videos';
+import Company from 'Components/Company';
 
 const Container = styled.div`
   height: calc(100vh - 50px);
@@ -70,7 +71,7 @@ const Divider = styled.span`
   margin: 0 10px;
 `;
 
-const Imdb = styled.a`
+const Site = styled.a`
   padding: 2px 10px;
   border: 1px solid #fff;
   border-radius: 3px;
@@ -78,6 +79,9 @@ const Imdb = styled.a`
   font-size: 14px;
   text-transform: uppercase;
   text-shadow: 2px 2px 3px rgba(0, 0, 0, 0.7);
+  &:not(:last-child) {
+    margin-right: 10px;
+  }
   &:hover {
     background-color: rgba(255, 255, 255, 0.5);
   }
@@ -96,6 +100,13 @@ const Overview = styled.p`
   width: 50%;
   text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.6);
   margin-bottom: 20px;
+`;
+
+const Bottom = styled.div`
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 70%;
 `;
 
 const DetailPresenter = ({ result, error, loading }) => {
@@ -171,15 +182,37 @@ const DetailPresenter = ({ result, error, loading }) => {
                   <Item>
                     <SFontAwesomeIcon icon={faStar} />({result.vote_average})
                   </Item>
+                  {result.production_countries ? (
+                    <>
+                      <Divider>•</Divider>
+                      <Item>
+                        <SFontAwesomeIcon icon={faGlobeAmericas} />
+                        {result.production_countries[0].iso_3166_1}
+                      </Item>
+                    </>
+                  ) : (
+                    <>
+                      <Divider>•</Divider>
+                      <Item>
+                        <SFontAwesomeIcon icon={faGlobeAmericas} />
+                        {result.origin_country[0]}
+                      </Item>
+                    </>
+                  )}
                 </ItemContainer>
                 {result.imdb_id ? (
                   <ItemContainer>
-                    <Imdb
+                    <Site
                       href={`https://www.imdb.com/title/${result.imdb_id}`}
                       target="_blank"
                     >
                       View IMDb
-                    </Imdb>
+                    </Site>
+                    {result.homepage && (
+                      <Site href={result.homepage} target="_blank">
+                        Official
+                      </Site>
+                    )}
                   </ItemContainer>
                 ) : null}
                 <Overview>{result.overview && result.overview}</Overview>
@@ -187,6 +220,12 @@ const DetailPresenter = ({ result, error, loading }) => {
                   <Videos videos={result.videos.results} />
                 )}
               </Data>
+              <Bottom>
+                {result.production_companies &&
+                  result.production_companies.length > 0 && (
+                    <Company companies={result.production_companies} />
+                  )}
+              </Bottom>
             </Content>
           </Container>
         )}

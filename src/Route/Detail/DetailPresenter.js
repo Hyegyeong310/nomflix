@@ -22,7 +22,7 @@ const Backdrop = styled.div`
   left: 0;
   top: 0;
   width: 100%;
-  height: 100%;
+  height: 100vh;
   background-image: url(${props => props.bgImage});
   background-size: cover;
   background-position: center center;
@@ -33,10 +33,10 @@ const Backdrop = styled.div`
 
 const Content = styled.div`
   display: flex;
+  position: absolute;
   width: 100%;
   height: 100%;
   z-index: 1;
-  position: relative;
 `;
 
 const Cover = styled.div`
@@ -49,8 +49,12 @@ const Cover = styled.div`
 `;
 
 const Data = styled.div`
+  display: grid;
   width: 70%;
   margin-left: 10px;
+  min-height: 100%;
+  grid-template-rows: auto 1fr auto;
+  grid-template-columns: 100%;
 `;
 
 const Title = styled.h3`
@@ -102,12 +106,7 @@ const Overview = styled.p`
   margin-bottom: 20px;
 `;
 
-const Bottom = styled.div`
-  position: absolute;
-  bottom: 0;
-  right: 0;
-  width: 70%;
-`;
+const Bottom = styled.div``;
 
 const DetailPresenter = ({ result, error, loading }) => {
   if (loading) {
@@ -219,13 +218,13 @@ const DetailPresenter = ({ result, error, loading }) => {
                 {result.videos && result.videos.results.length > 0 && (
                   <Videos videos={result.videos.results} />
                 )}
+                <Bottom>
+                  {result.production_companies &&
+                    result.production_companies.length > 0 && (
+                      <Company companies={result.production_companies} />
+                    )}
+                </Bottom>
               </Data>
-              <Bottom>
-                {result.production_companies &&
-                  result.production_companies.length > 0 && (
-                    <Company companies={result.production_companies} />
-                  )}
-              </Bottom>
             </Content>
           </Container>
         )}

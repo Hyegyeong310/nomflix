@@ -1,5 +1,9 @@
-import { createGlobalStyle } from 'styled-components';
+import styled, { createGlobalStyle } from 'styled-components';
 import reset from 'styled-reset';
+
+export const Container = styled.div`
+  padding: 20px;
+`;
 
 const globalStyles = createGlobalStyle`
     ${reset};
